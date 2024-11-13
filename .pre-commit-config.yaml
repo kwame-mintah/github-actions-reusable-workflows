@@ -1,0 +1,15 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-ast
+      - id: check-case-conflict
+      - id: check-yaml
+      - id: debug-statements
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: detect-private-key
+  # - repo: https://github.com/bridgecrewio/checkov.git
+  #   rev: '3.2.291'
+  #   hooks:
+  #     - id: checkov
