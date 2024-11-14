@@ -16,7 +16,7 @@ on:
 
 jobs:
   call-workflow:
-    uses: kwame-mintah/github-actions-reusable-workflows/.github/workflows/<name>.yml@v1 # could be branch name or git commit id
+    uses: kwame-mintah/github-actions-reusable-workflows/.github/workflows/<name>.yml@v1 # could be branch name (main) or git commit id (15ebb92...)
 ```
 
 # Workflows
@@ -77,3 +77,11 @@ The following repository variable needs to be set:
 | GCP_REGION                   | The default region to manage resources in.  |
 | GCP_REGISTRY_REPOSITORY_NAME | The repository name within the registry     |
 | DOCKER_IMAGE_NAME            | The name of the docker image built          |
+
+## [🧹 Run Python linter(s)](.github/workflows/python-run-linters.yml)
+
+This job will checkout and run various python linters against the code base.
+
+## [🧪 Run Python unit tests](.github/workflows/python-pytest-run-unit-tests.yml)
+
+This job will run all tests located in `/tests/unit*/` directory and provide a coverage report.
