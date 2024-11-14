@@ -37,6 +37,26 @@ update_changelog_on_bump = true
 annotated_tag = true
 ```
 
+## [🚀 Push Docker image to AWS ECR](.github/workflows/aws-docker-build-and-push-to-ecr.yml)
+
+This job will checkout the repository and push a docker image to the chosen AWS ECR using
+[configure-aws-credentials](https://github.com/aws-actions/configure-aws-credentials/tree/v4.0.1/) action.
+
+The following repository secrets need to be set:
+
+| Secret             | Description                  |
+| ------------------ | ---------------------------- |
+| AWS_REGION         | The AWS Region.              |
+| AWS_ACCOUNT_ID     | The AWS account ID.          |
+| AWS_ECR_REPOSITORY | The AWS ECR repository name. |
+
+The following repository variable needs to be set:
+
+| Secret               | Description                            |
+| -------------------- | -------------------------------------- |
+| AWS_ECR_REPOSITORY   | The name ECR repository.               |
+| AWS_GITHUB_ROLE_NAME | The GitHub role name created for OIDC. |
+
 ## [🚀 Push Docker image to GCP Artifact Registry](.github/workflows/gcp-docker-build-and-push.yml)
 
 This job will check out the repository and push a docker image to the chosen GCP Artifact Registry using
@@ -48,14 +68,14 @@ The following repository inputs need to be set:
 | ---------------------------- | ------------------------------------------- |
 | GCP_PROJECT_ID               | The default project to manage resources in. |
 | GCP_REGION                   | The default region to manage resources in.  |
-| GCP_REGISTRY_REPOSITORY_NAME | The repository name within the registry     |
-| DOCKER_IMAGE_NAME            | The name of the docker image built          |
+| GCP_REGISTRY_REPOSITORY_NAME | The repository name within the registry.    |
+| DOCKER_IMAGE_NAME            | The name of the docker image built.         |
 
 The following repository secrets need to be set:
 
-| Secret                         | Description                                         |
-| ------------------------------ | --------------------------------------------------- |
-| GCP_GITHUB_SERVICE_ACCOUNT_KEY | The json private key for the GitHub service account |
+| Secret                         | Description                                          |
+| ------------------------------ | ---------------------------------------------------- |
+| GCP_GITHUB_SERVICE_ACCOUNT_KEY | The json private key for the GitHub service account. |
 
 ## [🛸 GCP Cloud Run Deploy](.github/workflows/gcp-cloud-run-deploy.yml)
 
@@ -64,9 +84,9 @@ the same GitHub action mentioned above.
 
 The following repository secrets need to be set:
 
-| Secret                         | Description                                         |
-| ------------------------------ | --------------------------------------------------- |
-| GCP_GITHUB_SERVICE_ACCOUNT_KEY | The json private key for the GitHub service account |
+| Secret                         | Description                                          |
+| ------------------------------ | ---------------------------------------------------- |
+| GCP_GITHUB_SERVICE_ACCOUNT_KEY | The json private key for the GitHub service account. |
 
 The following repository variable needs to be set:
 
@@ -75,8 +95,8 @@ The following repository variable needs to be set:
 | GCP_CLOUD_RUN_NAME           | The name of the cloud run service to deploy |
 | GCP_PROJECT_ID               | The default project to manage resources in. |
 | GCP_REGION                   | The default region to manage resources in.  |
-| GCP_REGISTRY_REPOSITORY_NAME | The repository name within the registry     |
-| DOCKER_IMAGE_NAME            | The name of the docker image built          |
+| GCP_REGISTRY_REPOSITORY_NAME | The repository name within the registry.    |
+| DOCKER_IMAGE_NAME            | The name of the docker image built.         |
 
 ## [🧹 Run Python linter(s)](.github/workflows/python-run-linters.yml)
 
