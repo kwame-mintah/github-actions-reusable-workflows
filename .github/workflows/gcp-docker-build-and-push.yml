@@ -1,0 +1,63 @@
+name: "🚀 Push Docker image to GCP Artifact Registry"
+
+permissions:
+  contents: read
+
+on:
+  workflow_call:
+    inputs:
+      GCP_PROJECT_ID:
+        required: true
+        type: string
+      GCP_REGION:
+        required: true
+        type: string
+      GCP_REGISTRY_REPOSITORY_NAME:
+        required: true
+        type: string
+      DOCKER_IMAGE_NAME:
+        required: true
+        type: string
+    secrets:
+      GCP_GITHUB_SERVICE_ACCOUNT_KEY:
+        required: true
+
+env:
+  PROJECT_ID: "${{ inputs.GCP_PROJECT_ID }}"
+  REGION: "${{ inputs.GCP_REGION }}"
+  REGISTRY_REPOSITORY_NAME: "${{ inputs.GCP_REGISTRY_REPOSITORY_NAME }}"
+  DOCKER_IMAGE_LOCATION: "${{ inputs.GCP_REGION }}-docker.pkg.dev/${{ inputs.GCP_PROJECT_ID }}/${{ inputs.GCP_REGISTRY_REPOSITORY_NAME }}/${{ inputs.DOCKER_IMAGE_NAME }}"
+
+jobs:
+  build-push-artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v3"
+
+      - name: "Configure GitHub service account"
+        id: "auth"
+        uses: "google-github-actions/auth@v2.1.7"
+        with:
+          credentials_json: "${{ secrets.GCP_GITHUB_SERVICE_ACCOUNT_KEY }}"
+
+      - name: "Set up GCloud SDK"
+        uses: "google-github-actions/setup-gcloud@v2.1.2"
+
+      - name: "Use GCloud CLI"
+        run: "gcloud info"
+
+      - name: "Configure Docker auth"
+        run: |-
+          gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+
+      - name: "Latest semantic versioning tag"
+        id: "semver-version"
+        run: echo "TAG_NAME=$(cat VERSION)" >> "$GITHUB_OUTPUT"
+
+      - name: "Build image"
+        run: |-
+          docker build --tag ${{ env.DOCKER_IMAGE_LOCATION }}:${{ steps.semver-version.outputs.TAG_NAME }}  .
+
+      - name: "Push image"
+        run: docker push ${{ env.DOCKER_IMAGE_LOCATION }}:${{ steps.semver-version.outputs.TAG_NAME }}
