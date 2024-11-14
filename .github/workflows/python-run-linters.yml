@@ -4,8 +4,7 @@ permissions:
   contents: read
 
 on:
-  pull_request:
-    types: [ opened, reopened ]
+  workflow_call:
 
 jobs:
   flake8-lint:
